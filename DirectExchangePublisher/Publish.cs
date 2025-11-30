@@ -66,56 +66,53 @@ public class Publish
         };
 
 
-        while (true)
+        Console.Write("Routing Key > ");
+        string rk = Console.ReadLine();
+
+
+        // RabbitMQ metin değil, binary veri (byte array) taşır. 
+        // Bu yüzden string mesajımızı UTF-8 encoding ile byte dizisine çeviriyoruz. 
+        byte[] msgByte = Encoding.UTF8.GetBytes(message);
+
+
+        // BasicProperties: Mesajın meta verilerini (headerlarını) tanımlar.
+        // Yeni bir properties nesnesi oluşturuyoruz. 
+        var properties = new BasicProperties
         {
-            Console.Write("Routing Key > ");
-            string rk = Console.ReadLine();
+            // Persistent = true: Mesajın diskte saklanmasını talep eder (DeliveryMode = 2).
+            // Kuyruk da durable ise, RabbitMQ restart olsa bile mesaj kaybolmaz.
+            Persistent = true,
+
+            // ContentType: Mesajın içeriği hakkında tüketiciye bilgi verir (MIME type).
+            ContentType = "text/plain",
+
+            // MessageId: Mesajın tekil kimliği. İzleme (tracing) ve deduplication için kullanılır.
+            MessageId = Guid.NewGuid().ToString(),
+
+            // AppId: Mesajı üreten uygulamanın adı.
+            AppId = "ProducerApp_v1"
+        };
 
 
-            // RabbitMQ metin değil, binary veri (byte array) taşır. 
-            // Bu yüzden string mesajımızı UTF-8 encoding ile byte dizisine çeviriyoruz. 
-            byte[] msgByte = Encoding.UTF8.GetBytes(message);
+        // ----------------------------------------------------------------------------------
+        // ADIM 6: Mesajın Yayınlanması (Publishing)
+        // ----------------------------------------------------------------------------------
 
+        // BasicPublishAsync: Mesajı exchange'e gönderir.
+        // Parametreler:
+        // - exchange: Hedef exchange adı.
+        // - routingKey: Mesajın yönlendirme anahtarı. Direct exchange bunu kullanarak kuyruk seçer.
+        // - mandatory: true -> Mesaj yönlendirilemezse BasicReturn tetiklensin. (false olursa sessizce silinir). [11, 17]
+        // - basicProperties: Yukarıda tanımladığımız meta veriler.
+        // - body: Mesajın kendisi (byte array).
 
-            // BasicProperties: Mesajın meta verilerini (headerlarını) tanımlar.
-            // Yeni bir properties nesnesi oluşturuyoruz. 
-            var properties = new BasicProperties
-            {
-                // Persistent = true: Mesajın diskte saklanmasını talep eder (DeliveryMode = 2).
-                // Kuyruk da durable ise, RabbitMQ restart olsa bile mesaj kaybolmaz.
-                Persistent = true,
+        await channel.BasicPublishAsync(
+            exchange: exchangeName,
+            routingKey: rk,
+            mandatory: true,
+            basicProperties: properties,
+            body: msgByte);
 
-                // ContentType: Mesajın içeriği hakkında tüketiciye bilgi verir (MIME type).
-                ContentType = "text/plain",
-
-                // MessageId: Mesajın tekil kimliği. İzleme (tracing) ve deduplication için kullanılır.
-                MessageId = Guid.NewGuid().ToString(),
-
-                // AppId: Mesajı üreten uygulamanın adı.
-                AppId = "ProducerApp_v1"
-            };
-
-
-            // ----------------------------------------------------------------------------------
-            // ADIM 6: Mesajın Yayınlanması (Publishing)
-            // ----------------------------------------------------------------------------------
-
-            // BasicPublishAsync: Mesajı exchange'e gönderir.
-            // Parametreler:
-            // - exchange: Hedef exchange adı.
-            // - routingKey: Mesajın yönlendirme anahtarı. Direct exchange bunu kullanarak kuyruk seçer.
-            // - mandatory: true -> Mesaj yönlendirilemezse BasicReturn tetiklensin. (false olursa sessizce silinir). [11, 17]
-            // - basicProperties: Yukarıda tanımladığımız meta veriler.
-            // - body: Mesajın kendisi (byte array).
-
-            await channel.BasicPublishAsync(
-                exchange: exchangeName,
-                routingKey: rk,
-                mandatory: true,
-                basicProperties: properties,
-                body: msgByte);
-
-            Console.WriteLine($" [x] Gönderildi -> Key: '{rk}', Mesaj: '{message}'");
-        }
+        Console.WriteLine($" [x] Gönderildi -> Key: '{rk}', Mesaj: '{message}'");
     }
 }
