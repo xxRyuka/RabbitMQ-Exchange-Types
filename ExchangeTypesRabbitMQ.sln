@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectExchangePublisher", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectExchangeConsumer", "DirectExchangeConsumer\DirectExchangeConsumer.csproj", "{733D9D7D-18FA-4C90-A558-ACAEA2DF0D0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanoutExchangePublisher", "FanoutExchangePublisher\FanoutExchangePublisher.csproj", "{B50AF4B4-DD79-4BD7-B603-58CAC5CEABED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanoutExchangeConsumer", "FanoutExchangeConsumer\FanoutExchangeConsumer.csproj", "{6CFA1C1A-2E52-412A-8F38-3D6C8C0827AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{733D9D7D-18FA-4C90-A558-ACAEA2DF0D0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{733D9D7D-18FA-4C90-A558-ACAEA2DF0D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{733D9D7D-18FA-4C90-A558-ACAEA2DF0D0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B50AF4B4-DD79-4BD7-B603-58CAC5CEABED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B50AF4B4-DD79-4BD7-B603-58CAC5CEABED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B50AF4B4-DD79-4BD7-B603-58CAC5CEABED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B50AF4B4-DD79-4BD7-B603-58CAC5CEABED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CFA1C1A-2E52-412A-8F38-3D6C8C0827AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CFA1C1A-2E52-412A-8F38-3D6C8C0827AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CFA1C1A-2E52-412A-8F38-3D6C8C0827AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CFA1C1A-2E52-412A-8F38-3D6C8C0827AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
